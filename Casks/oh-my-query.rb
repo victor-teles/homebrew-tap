@@ -1,5 +1,5 @@
 cask "oh-my-query" do
-  version "0.0.1"
+  version "0.0.3"
 
   on_arm do
     url "https://github.com/victor-teles/oh-my-query/releases/download/v#{version}/oh-my-query_#{version}_aarch64.dmg"
