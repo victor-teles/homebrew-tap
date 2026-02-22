@@ -11,11 +11,11 @@ cask "oh-my-query" do
     sha256 "13f9d16b00dee741918f2eeaf51c49e3d296ea6a69a5f443c973b32be231b6af"
   end
 
-  name "oh-my-query"
+  name "Oh my query"
   desc "Desktop app for querying databases with AI"
   homepage "https://github.com/victor-teles/oh-my-query"
 
-  app "oh-my-query.app"
+  app "OhMyQuery.app"
 
   postflight do
     system_command "/usr/bin/xattr",
