@@ -19,7 +19,7 @@ cask "oh-my-query" do
 
   postflight do
     system_command "/usr/bin/xattr",
-      args: ["-dr", "com.apple.quarantine", "#{appdir}/oh-my-query.app"],
+      args: ["-dr", "com.apple.quarantine", "#{appdir}/OhMyQuery.app"],
       sudo: false
   end
 
