@@ -15,11 +15,11 @@ cask "oh-my-query" do
   desc "Desktop app for querying databases with AI"
   homepage "https://github.com/victor-teles/oh-my-query"
 
-  app "OhMyQuery.app"
+  app "oh_my_query.app"
 
   postflight do
     system_command "/usr/bin/xattr",
-      args: ["-dr", "com.apple.quarantine", "#{appdir}/OhMyQuery.app"],
+      args: ["-dr", "com.apple.quarantine", "#{appdir}/oh_my_query.app"],
       sudo: false
   end
 
