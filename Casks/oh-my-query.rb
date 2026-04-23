@@ -1,14 +1,14 @@
 cask "oh-my-query" do
-  version "0.0.9"
+  version "0.0.10"
 
   on_arm do
     url "https://github.com/victor-teles/oh-my-query/releases/download/v#{version}/oh_my_query_#{version}_aarch64.dmg"
-    sha256 "182698e6c73d012dea0d7223c4a1eec443bf659a95b30afd7521c603a4242606"
+    sha256 "803c0b55abc9f81ba03c72c8466b9dce6329e8d8b58bfb23c70e5f6d2b399de1"
   end
 
   on_intel do
     url "https://github.com/victor-teles/oh-my-query/releases/download/v#{version}/oh_my_query_#{version}_x64.dmg"
-    sha256 "e9ac99bc0a52201ee86c6125ec450e1107572c665d1cba8ccdc260bc8eeb0489"
+    sha256 "e8ab6ae6b1793ee1c792437400af80e94a3f9b2ad21afaa4712b45c856e73129"
   end
 
   name "Oh my query"
