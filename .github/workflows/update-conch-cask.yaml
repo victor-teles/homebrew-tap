@@ -1,0 +1,80 @@
+name: Update Conch cask
+
+on:
+  repository_dispatch:
+    types: [update-conch-cask]
+
+jobs:
+  update:
+    name: Write the conch cask
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Write Casks/conch.rb
+        env:
+          VERSION: ${{ github.event.client_payload.version }}
+          ARM64_SHA: ${{ github.event.client_payload.arm64_sha }}
+          X64_SHA: ${{ github.event.client_payload.x64_sha }}
+        run: |
+          set -euo pipefail
+          VERSION="${VERSION#v}"
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Not a stable version: ${VERSION}"
+            exit 1
+          fi
+          for SHA in "$ARM64_SHA" "$X64_SHA"; do
+            if ! [[ "$SHA" =~ ^[0-9a-f]{64}$ ]]; then
+              echo "::error::Not a SHA-256 digest: ${SHA}"
+              exit 1
+            fi
+          done
+
+          cat > Casks/conch.rb <<EOF
+          cask "conch" do
+            version "${VERSION}"
+
+            on_arm do
+              url "https://github.com/victor-teles/conch/releases/download/v#{version}/Conch_#{version}_arm64.dmg"
+              sha256 "${ARM64_SHA}"
+            end
+
+            on_intel do
+              url "https://github.com/victor-teles/conch/releases/download/v#{version}/Conch_#{version}_x64.dmg"
+              sha256 "${X64_SHA}"
+            end
+
+            name "Conch"
+            desc "Database launcher: ask your database a question from a hotkey"
+            homepage "https://github.com/victor-teles/conch"
+
+            auto_updates true
+            depends_on macos: ">= :sonoma"
+
+            app "Conch.app"
+
+            uninstall quit: "dev.conch.app"
+
+            zap trash: [
+              "~/.config/conch",
+              "~/Library/Application Support/dev.conch.app",
+              "~/Library/Caches/dev.conch.app",
+              "~/Library/WebKit/dev.conch.app",
+            ]
+          end
+          EOF
+          cat Casks/conch.rb
+
+      - name: Commit and push
+        env:
+          VERSION: ${{ github.event.client_payload.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Casks/conch.rb
+          git diff --staged --quiet && exit 0
+          git commit -m "Update conch to v${VERSION#v}"
+          git push
